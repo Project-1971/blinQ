@@ -1,16 +1,37 @@
 <!doctype html>
 <html lang="bn"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Mess</title>
+<title>BLINQ</title>
 <style>
-body{font:16px system-ui,sans-serif;margin:0;padding:max(16px,env(safe-area-inset-top)) 16px 16px;background:#111b21;color:#e9edef}
-code{word-break:break-all;color:#53bdeb}
-button{padding:12px 16px;border:0;border-radius:8px;background:#00a884;color:#fff;font-weight:600}
-#log{white-space:pre-wrap;margin-top:12px}
-</style></head>
-<body><h2>Mess <small id="v"></small></h2>
-<p>আপনার ID:<br><code id="id"></code></p>
-<p>রিলে: <b id="st">…</b></p>
-<button id="t">নিজেকে টেস্ট মেসেজ পাঠান</button>
-<div id="log"></div>
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{height:100%;margin:0}body{font:16px system-ui,sans-serif;background:#0b141a;color:#e9edef}
+#list,#chat,#add{display:flex;flex-direction:column;height:100%}
+header{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:#202c33}
+header b{flex:1}header small,#st{color:#8696a0;font-size:12px}
+button,.btn{background:#00a884;color:#fff;border:0;border-radius:8px;padding:10px 14px;font:inherit}
+header button{background:none;font-size:20px;padding:4px 8px}
+#rows,#msgs{flex:1;overflow:auto}
+.row{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid #202c33}
+.av{width:44px;height:44px;border-radius:50%;background:#6b7c85;display:grid;place-items:center;font-weight:700}
+small{color:#8696a0}.empty{padding:24px;color:#8696a0}
+#msgs{display:flex;flex-direction:column;gap:6px;padding:12px}
+.b{max-width:80%;padding:8px 10px;border-radius:8px;white-space:pre-wrap;word-break:break-word}
+.o{align-self:flex-end;background:#005c4b}.i{align-self:flex-start;background:#202c33}
+footer{display:flex;gap:8px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:#202c33}
+footer input{flex:1;border:0;border-radius:20px;padding:10px 14px;background:#2a3942;color:inherit;font:inherit}
+#req{padding:10px;background:#202c33;text-align:center}
+.pad{padding:16px;display:flex;flex-direction:column;gap:12px;align-items:center;overflow:auto}
+.pad input{background:#2a3942;border:0;border-radius:8px;padding:8px;color:inherit}
+#qr{width:240px;height:240px;background:#fff;border-radius:8px}#vid{width:100%;border-radius:8px}
+#toast{position:fixed;left:16px;right:16px;bottom:80px;background:#233138;padding:12px;border-radius:8px;text-align:center}
+</style></head><body>
+<div id="list"><header><b>BLINQ <small id="ver"></small></b><span id="st"></span><button id="addb">➕</button></header><div id="rows"></div></div>
+<div id="chat" hidden><header><button id="back">←</button><b id="cname"></b></header>
+<div id="req" hidden>অপরিচিত ব্যক্তি <button id="acc">গ্রহণ</button> <button id="blk">ব্লক</button></div>
+<div id="msgs"></div><footer><input id="inp" placeholder="মেসেজ লিখুন"><button id="snd">➤</button></footer></div>
+<div id="add" hidden><header><button id="back2">←</button><b>কন্টাক্ট যোগ</b></header>
+<div class="pad"><label>আপনার নাম <input id="myname"></label><img id="qr" alt="QR"><small>অপর জনকে এই QR স্ক্যান করতে বলুন</small>
+<button id="cam">ক্যামেরায় স্ক্যান</button><label class="btn">গ্যালারি থেকে<input type="file" id="pick" accept="image/*" hidden></label>
+<video id="vid" playsinline muted hidden></video></div></div>
+<div id="toast" hidden></div>
 <script type="module" src="./src/main.js"></script></body></html>
