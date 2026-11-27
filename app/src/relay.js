@@ -1,7 +1,6 @@
 import sodium from "libsodium-wrappers";
 
-export const RELAY = import.meta.env.VITE_RELAY_URL || "http://localhost:8787";
-
+export const RELAY = (import.meta.env.VITE_RELAY_URL || "http://localhost:8787").replace(/\/+$/, "");
 export function connect(me, onMessage, onStatus) {
   const ws = new WebSocket(RELAY.replace(/^http/, "ws") + "/ws/" + me.id);
   ws.onopen = () => onStatus("সংযোগ হচ্ছে…");
