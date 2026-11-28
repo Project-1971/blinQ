@@ -32,12 +32,17 @@ footer input{flex:1;border-radius:20px;padding:10px 14px}
 #sheet{position:fixed;inset:auto 0 0 0;background:var(--hd);padding:12px 12px calc(12px + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;gap:8px;border-radius:16px 16px 0 0}
 #sheet button{flex:1 1 40%;background:var(--fld);color:var(--tx)}#sheet .em{flex:0 0 14%;font-size:20px;padding:8px 0}#sheet .cx{flex:1 1 100%;background:none;color:var(--mu)}
 #sbody button{margin:6px 16px;display:block;width:calc(100% - 32px);text-align:left;background:var(--fld);color:var(--tx)}
+.s{align-self:center;background:var(--hd);color:var(--mu);font-size:13px}
+#warn{padding:8px 12px;background:#7a3b00;color:#fff;text-align:center}
+#lock{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;z-index:9}
+#cover{position:fixed;inset:0;background:var(--bg);z-index:10}
 </style></head><body>
 <div id="list"><header><b>BLINQ <small id="ver"></small></b><span id="st"></span><button id="arc">🗄</button><button id="setb">⚙</button><button id="addb">➕</button></header>
 <input id="sq" class="sq" placeholder="খুঁজুন"><div id="rows"></div></div>
 <div id="chat" hidden><header><button id="back">←</button><b id="cname"></b><button id="csb">🔍</button><button id="menu">⋮</button></header>
 <input id="csq" class="sq" placeholder="চ্যাটে খুঁজুন" hidden>
 <div id="req" hidden>অপরিচিত ব্যক্তি <button id="acc">গ্রহণ</button> <button id="blk">ব্লক</button></div>
+<div id="warn" hidden>⚠️ নিরাপত্তা কোড বদলেছে <button id="wrs">রিসেট</button></div>
 <div id="msgs"></div><div id="rb" hidden><span id="rbt"></span><button id="rbx">✕</button></div>
 <footer><input id="inp" placeholder="মেসেজ লিখুন"><button id="snd">➤</button></footer></div>
 <div id="add" hidden><header><button id="back2">←</button><b>কন্টাক্ট যোগ</b></header>
@@ -47,5 +52,7 @@ footer input{flex:1;border-radius:20px;padding:10px 14px}
 <label class="btn">গ্যালারি থেকে<input type="file" id="pick" accept="image/*" hidden></label>
 <video id="vid" playsinline muted hidden></video></div></div>
 <div id="set" hidden><header><button id="back3">←</button><b>সেটিংস</b></header><div id="sbody"></div></div>
+<div id="lock" hidden><h2>BLINQ</h2><input id="pin" type="password" inputmode="numeric" maxlength="8" placeholder="PIN"><button id="unl">খুলুন</button><button id="bio" hidden>👆 বায়োমেট্রিক</button><small id="lerr"></small></div>
+<div id="cover" hidden></div>
 <div id="toast" hidden></div><div id="sheet" hidden></div>
 <script type="module" src="./src/main.js"></script></body></html>

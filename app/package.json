@@ -1,6 +1,6 @@
 {
   "name": "blinq-app",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,7 +16,8 @@
     "libsodium-wrappers": "0.7.13",
     "qrcode": "^1.5.4",
     "@capacitor/filesystem": "^6.0.0",
-    "@capacitor/share": "^6.0.0"
+    "@capacitor/share": "^6.0.0",
+    "@aparajita/capacitor-biometric-auth": "^8.0.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^6.1.2",

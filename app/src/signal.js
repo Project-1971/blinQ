@@ -1,3 +1,4 @@
+import sodium from "libsodium-wrappers";
 import { KeyHelper, SignalProtocolAddress, SessionBuilder, SessionCipher } from "@privacyresearch/libsignal-protocol-typescript";
 
 const b2s = (b) => btoa(String.fromCharCode(...new Uint8Array(b)));
@@ -7,13 +8,14 @@ const dec = (v) => v && v.$b !== undefined ? s2b(v.$b) : Array.isArray(v) ? v.ma
 const get = (k) => { const r = localStorage.getItem("blinq." + k); return r === null ? undefined : dec(JSON.parse(r)); };
 const put = (k, v) => localStorage.setItem("blinq." + k, JSON.stringify(enc(v)));
 const del = (k) => localStorage.removeItem("blinq." + k);
+const nm = (id) => String(id).replace(/\.\d+$/, ""); // লাইব্রেরি কখনো "নাম", কখনো "নাম.১" দেয়
 
 // Signal স্টোরেজ। TOFU: প্রথমবার দেখা চাবি বিশ্বাস, বদলালে ত্রুটি (সতর্কতার UI v0.4.0-এ)
 const store = {
   getIdentityKeyPair: async () => get("ikp"),
   getLocalRegistrationId: async () => get("rid"),
-  isTrustedIdentity: async (id, key) => { const k = get("ik." + id); return k === undefined || b2s(k) === b2s(key); },
-  saveIdentity: async (id, key) => { const k = get("ik." + id); put("ik." + id, key); return k !== undefined && b2s(k) !== b2s(key); },
+  isTrustedIdentity: async (id, key) => { const k = get("ik." + nm(id)); return k === undefined || b2s(k) === b2s(key); },
+  saveIdentity: async (id, key) => { const k = get("ik." + nm(id)); put("ik." + nm(id), key); return k !== undefined && b2s(k) !== b2s(key); },
   loadPreKey: async (id) => get("pk." + id), storePreKey: async (id, kp) => put("pk." + id, kp), removePreKey: async (id) => del("pk." + id),
   loadSignedPreKey: async (id) => get("spk." + id), storeSignedPreKey: async (id, kp) => put("spk." + id, kp), removeSignedPreKey: async (id) => del("spk." + id),
   loadSession: async (id) => get("ses." + id), storeSession: async (id, rec) => put("ses." + id, rec),
@@ -43,3 +45,11 @@ export async function decrypt(id, t, b) {
   const p = t === 3 ? await c.decryptPreKeyWhisperMessage(b, "binary") : await c.decryptWhisperMessage(b, "binary");
   return new TextDecoder().decode(p);
 }
+
+export const peerIk = (id) => { const k = get("ik." + id); return k && b2s(k); };
+export function safety(id) {
+  const a = peerIk(id); if (!a) return null;
+  const h = sodium.crypto_generichash(32, [myIk(), a].sort().join("|"));
+  return Array.from({ length: 6 }, (_, i) => String(((h[i * 3] << 16) | (h[i * 3 + 1] << 8) | h[i * 3 + 2]) % 100000).padStart(5, "0")).join(" ");
+}
+export const resetPeer = (id) => { del("ik." + id); del("ses." + id + ".1"); };
