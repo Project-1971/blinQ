@@ -3,35 +3,49 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>BLINQ</title>
 <style>
+:root{--bg:#0b141a;--hd:#202c33;--tx:#e9edef;--mu:#8696a0;--in:#202c33;--out:#005c4b;--ac:#00a884;--fld:#2a3942}
+[data-theme=light]{--bg:#efeae2;--hd:#f0f2f5;--tx:#111b21;--mu:#667781;--in:#fff;--out:#d9fdd3;--fld:#fff}
 *{box-sizing:border-box}[hidden]{display:none!important}
-html,body{height:100%;margin:0}body{font:16px system-ui,sans-serif;background:#0b141a;color:#e9edef}
-#list,#chat,#add{display:flex;flex-direction:column;height:100%}
-header{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:#202c33}
-header b{flex:1}header small,#st{color:#8696a0;font-size:12px}
-button,.btn{background:#00a884;color:#fff;border:0;border-radius:8px;padding:10px 14px;font:inherit}
-header button{background:none;font-size:20px;padding:4px 8px}
-#rows,#msgs{flex:1;overflow:auto}
-.row{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid #202c33}
-.av{width:44px;height:44px;border-radius:50%;background:#6b7c85;display:grid;place-items:center;font-weight:700}
-small{color:#8696a0}.empty{padding:24px;color:#8696a0}
+html,body{height:100%;margin:0}body{font:16px system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+#list,#chat,#add,#set{display:flex;flex-direction:column;height:100%}
+header{display:flex;align-items:center;gap:6px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:var(--hd)}
+header b{flex:1}header small,#st{color:var(--mu);font-size:12px}
+button,.btn{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:10px 14px;font:inherit}
+header button{background:none;color:var(--tx);font-size:20px;padding:4px 8px}
+input{background:var(--fld);color:var(--tx);border:0;border-radius:8px;padding:8px;font:inherit}
+.sq{margin:8px 12px}
+#rows,#msgs,#sbody{flex:1;overflow:auto}
+.row{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--hd)}
+.av{width:44px;height:44px;border-radius:50%;background:#6b7c85;display:grid;place-items:center;font-weight:700;color:#fff}
+small,.empty{color:var(--mu)}.empty{padding:24px}
 #msgs{display:flex;flex-direction:column;gap:6px;padding:12px}
-.b{max-width:80%;padding:8px 10px;border-radius:8px;white-space:pre-wrap;word-break:break-word}
-.o{align-self:flex-end;background:#005c4b}.i{align-self:flex-start;background:#202c33}
-footer{display:flex;gap:8px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:#202c33}
-footer input{flex:1;border:0;border-radius:20px;padding:10px 14px;background:#2a3942;color:inherit;font:inherit}
-#req{padding:10px;background:#202c33;text-align:center}
+.b{max-width:80%;padding:8px 10px;border-radius:8px;white-space:pre-wrap;word-break:break-word;position:relative;margin-bottom:6px}
+.o{align-self:flex-end;background:var(--out)}.i{align-self:flex-start;background:var(--in)}
+.q{border-left:3px solid var(--ac);padding:2px 6px;margin-bottom:4px;color:var(--mu);font-size:13px}
+.re{position:absolute;right:6px;bottom:-12px;background:var(--hd);border-radius:10px;padding:0 4px;font-size:13px}
+footer{display:flex;gap:8px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:var(--hd)}
+footer input{flex:1;border-radius:20px;padding:10px 14px}
+#req,#rb{padding:8px 12px;background:var(--hd);text-align:center}#rb{display:flex;justify-content:space-between;align-items:center;color:var(--mu)}
 .pad{padding:16px;display:flex;flex-direction:column;gap:12px;align-items:center;overflow:auto}
-.pad input{background:#2a3942;border:0;border-radius:8px;padding:8px;color:inherit}
 #qr{width:240px;height:240px;background:#fff;border-radius:8px}#vid{width:100%;border-radius:8px}
-#toast{position:fixed;left:16px;right:16px;bottom:80px;background:#233138;padding:12px;border-radius:8px;text-align:center}
+#toast{position:fixed;left:16px;right:16px;bottom:80px;background:var(--hd);padding:12px;border-radius:8px;text-align:center}
+#sheet{position:fixed;inset:auto 0 0 0;background:var(--hd);padding:12px 12px calc(12px + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;gap:8px;border-radius:16px 16px 0 0}
+#sheet button{flex:1 1 40%;background:var(--fld);color:var(--tx)}#sheet .em{flex:0 0 14%;font-size:20px;padding:8px 0}#sheet .cx{flex:1 1 100%;background:none;color:var(--mu)}
+#sbody button{margin:6px 16px;display:block;width:calc(100% - 32px);text-align:left;background:var(--fld);color:var(--tx)}
 </style></head><body>
-<div id="list"><header><b>BLINQ <small id="ver"></small></b><span id="st"></span><button id="addb">➕</button></header><div id="rows"></div></div>
-<div id="chat" hidden><header><button id="back">←</button><b id="cname"></b></header>
+<div id="list"><header><b>BLINQ <small id="ver"></small></b><span id="st"></span><button id="arc">🗄</button><button id="setb">⚙</button><button id="addb">➕</button></header>
+<input id="sq" class="sq" placeholder="খুঁজুন"><div id="rows"></div></div>
+<div id="chat" hidden><header><button id="back">←</button><b id="cname"></b><button id="csb">🔍</button><button id="menu">⋮</button></header>
+<input id="csq" class="sq" placeholder="চ্যাটে খুঁজুন" hidden>
 <div id="req" hidden>অপরিচিত ব্যক্তি <button id="acc">গ্রহণ</button> <button id="blk">ব্লক</button></div>
-<div id="msgs"></div><footer><input id="inp" placeholder="মেসেজ লিখুন"><button id="snd">➤</button></footer></div>
+<div id="msgs"></div><div id="rb" hidden><span id="rbt"></span><button id="rbx">✕</button></div>
+<footer><input id="inp" placeholder="মেসেজ লিখুন"><button id="snd">➤</button></footer></div>
 <div id="add" hidden><header><button id="back2">←</button><b>কন্টাক্ট যোগ</b></header>
 <div class="pad"><label>আপনার নাম <input id="myname"></label><img id="qr" alt="QR"><small>অপর জনকে এই QR স্ক্যান করতে বলুন</small>
-<button id="cam">ক্যামেরায় স্ক্যান</button><label class="btn">গ্যালারি থেকে<input type="file" id="pick" accept="image/*" hidden></label>
+<button id="saveqr">QR সেভ / শেয়ার করুন</button>
+<button id="cam">ক্যামেরায় স্ক্যান</button><label class="btn">ছবি তুলে স্ক্যান<input type="file" id="snap" accept="image/*" capture="environment" hidden></label>
+<label class="btn">গ্যালারি থেকে<input type="file" id="pick" accept="image/*" hidden></label>
 <video id="vid" playsinline muted hidden></video></div></div>
-<div id="toast" hidden></div>
+<div id="set" hidden><header><button id="back3">←</button><b>সেটিংস</b></header><div id="sbody"></div></div>
+<div id="toast" hidden></div><div id="sheet" hidden></div>
 <script type="module" src="./src/main.js"></script></body></html>
