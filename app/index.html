@@ -1,27 +1,28 @@
 <!doctype html>
 <html lang="bn"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4B3AA8">
 <title>BLINQ</title>
 <style>
-:root{--bg:#0b141a;--hd:#202c33;--tx:#e9edef;--mu:#8696a0;--in:#202c33;--out:#005c4b;--ac:#00a884;--fld:#2a3942}
-[data-theme=light]{--bg:#efeae2;--hd:#f0f2f5;--tx:#111b21;--mu:#667781;--in:#fff;--out:#d9fdd3;--fld:#fff}
+:root{--bg:#0E0D14;--hd:#1B1930;--hdr:#4B3AA8;--tx:#ECEAF7;--mu:#9C98B8;--in:#1F1D33;--out:#4B3AA8;--ac:#4B3AA8;--acl:#A99BFF;--fld:#2A2745}
+[data-theme=light]{--bg:#F5F3FF;--hd:#ECE9FA;--tx:#1B1630;--mu:#6B6788;--in:#fff;--fld:#fff;--acl:#4B3AA8}
 *{box-sizing:border-box}[hidden]{display:none!important}
 html,body{height:100%;margin:0}body{font:16px system-ui,sans-serif;background:var(--bg);color:var(--tx)}
 #list,#chat,#add,#set{display:flex;flex-direction:column;height:100%}
-header{display:flex;align-items:center;gap:6px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:var(--hd)}
-header b{flex:1}header small,#st{color:var(--mu);font-size:12px}
+header{display:flex;align-items:center;gap:6px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:var(--hdr);color:#fff}
+header b{flex:1}header small,#st{color:#fff;opacity:.75;font-size:12px}
 button,.btn{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:10px 14px;font:inherit}
-header button{background:none;color:var(--tx);font-size:20px;padding:4px 8px}
+header button{background:none;color:#fff;font-size:20px;padding:4px 8px}
 input{background:var(--fld);color:var(--tx);border:0;border-radius:8px;padding:8px;font:inherit}
 .sq{margin:8px 12px}
 #rows,#msgs,#sbody{flex:1;overflow:auto}
 .row{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--hd)}
-.av{width:44px;height:44px;border-radius:50%;background:#6b7c85;display:grid;place-items:center;font-weight:700;color:#fff}
+.av{width:44px;height:44px;border-radius:50%;background:var(--ac);display:grid;place-items:center;font-weight:700;color:#fff}
 small,.empty{color:var(--mu)}.empty{padding:24px}
 #msgs{display:flex;flex-direction:column;gap:6px;padding:12px}
 .b{max-width:80%;padding:8px 10px;border-radius:8px;white-space:pre-wrap;word-break:break-word;position:relative;margin-bottom:6px}
-.o{align-self:flex-end;background:var(--out)}.i{align-self:flex-start;background:var(--in)}
-.q{border-left:3px solid var(--ac);padding:2px 6px;margin-bottom:4px;color:var(--mu);font-size:13px}
+.o{align-self:flex-end;background:var(--out);color:#fff}.i{align-self:flex-start;background:var(--in)}
+.q{border-left:3px solid var(--acl);padding:2px 6px;margin-bottom:4px;color:var(--mu);font-size:13px}
 .re{position:absolute;right:6px;bottom:-12px;background:var(--hd);border-radius:10px;padding:0 4px;font-size:13px}
 footer{display:flex;gap:8px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:var(--hd)}
 footer input{flex:1;border-radius:20px;padding:10px 14px}
@@ -36,6 +37,10 @@ footer input{flex:1;border-radius:20px;padding:10px 14px}
 #warn{padding:8px 12px;background:#7a3b00;color:#fff;text-align:center}
 #lock{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;z-index:9}
 #cover{position:fixed;inset:0;background:var(--bg);z-index:10}
+.o .q{color:#E6E0FF;border-color:#fff}
+#dots{font-size:28px;letter-spacing:8px;min-height:36px}
+#kp{display:grid;grid-template-columns:repeat(3,72px);gap:12px}
+#kp button{height:60px;font-size:22px;background:var(--fld);color:var(--tx);border-radius:30px}
 </style></head><body>
 <div id="list"><header><b>BLINQ <small id="ver"></small></b><span id="st"></span><button id="arc">🗄</button><button id="setb">⚙</button><button id="addb">➕</button></header>
 <input id="sq" class="sq" placeholder="খুঁজুন"><div id="rows"></div></div>
@@ -52,7 +57,7 @@ footer input{flex:1;border-radius:20px;padding:10px 14px}
 <label class="btn">গ্যালারি থেকে<input type="file" id="pick" accept="image/*" hidden></label>
 <video id="vid" playsinline muted hidden></video></div></div>
 <div id="set" hidden><header><button id="back3">←</button><b>সেটিংস</b></header><div id="sbody"></div></div>
-<div id="lock" hidden><h2>BLINQ</h2><input id="pin" type="password" inputmode="numeric" maxlength="8" placeholder="PIN"><button id="unl">খুলুন</button><button id="bio" hidden>👆 বায়োমেট্রিক</button><small id="lerr"></small></div>
+<div id="lock" hidden><h2>BLINQ</h2><div id="dots">—</div><div id="kp"></div><button id="unl" hidden></button><button id="bio" hidden>👆 বায়োমেট্রিক</button><small id="lerr"></small></div>
 <div id="cover" hidden></div>
 <div id="toast" hidden></div><div id="sheet" hidden></div>
 <script type="module" src="./src/main.js"></script></body></html>

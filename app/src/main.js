@@ -204,8 +204,10 @@ async function hashPin(pin, salt) {
 async function setPin(p) { const s = rnd(); setPref("pin", s + ":" + (await hashPin(p, s))); }
 async function verifyPin(p) { const [s, h] = pref("pin", ":").split(":"); return !!p && (await hashPin(p, s)) === h; }
 const unlock = () => { setPref("fails", "0"); $("lock").hidden = true; purge(); };
+let pinBuf = "";
+const dots = () => ($("dots").textContent = "●".repeat(pinBuf.length) || "—");
 async function tryBio() { if (pref("bio", "0") !== "1") return; try { await BiometricAuth.authenticate({ reason: "BLINQ খুলুন" }); unlock(); } catch {} }
-function lock() { if (!pinSet()) return; $("lock").hidden = false; $("pin").value = ""; $("lerr").textContent = ""; $("bio").hidden = pref("bio", "0") !== "1"; tryBio(); }
+function lock() { if (!pinSet()) return; $("lock").hidden = false; pinBuf = ""; dots(); $("lerr").textContent = ""; $("bio").hidden = pref("bio", "0") !== "1"; tryBio(); }
 
 // ডিজঅ্যাপিয়ারিং মেসেজ
 function purge() {
@@ -245,12 +247,17 @@ settingsItems.push(
 );
 
 $("unl").onclick = async () => {
-  if (await verifyPin($("pin").value)) return unlock();
+  if (await verifyPin(pinBuf)) return unlock();
   const n = +pref("fails", "0") + 1; setPref("fails", n);
   if (n >= 10) return wipe();
-  $("lerr").textContent = `ভুল PIN (আর ${10 - n} বার)`; $("pin").value = "";
+  $("lerr").textContent = `ভুল PIN (আর ${10 - n} বার)`; pinBuf = ""; dots();
 };
-$("pin").onkeydown = (e) => e.key === "Enter" && $("unl").click();
+$("kp").innerHTML = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"].map((k) => `<button data-k="${k}">${k}</button>`).join("");
+$("kp").onclick = (e) => {
+  const k = e.target.dataset?.k; if (!k) return;
+  if (k === "✓") return $("unl").click();
+  pinBuf = k === "⌫" ? pinBuf.slice(0, -1) : pinBuf.length < 8 ? pinBuf + k : pinBuf; dots();
+};
 $("bio").onclick = tryBio;
 $("wrs").onclick = () => { resetPeer(cur); saveContact(cur, { warn: false }); $("warn").hidden = true; alert("পুরনো চাবি মুছে ফেলা হয়েছে। অপর জনের QR আবার স্ক্যান করে নিরাপত্তা কোড মিলিয়ে নিন।"); };
 let hiddenAt = 0;
