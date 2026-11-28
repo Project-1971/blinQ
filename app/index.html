@@ -1,63 +1,79 @@
 <!doctype html>
 <html lang="bn"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#4B3AA8">
+<meta name="theme-color" content="#0E0D14">
 <title>BLINQ</title>
 <style>
-:root{--bg:#0E0D14;--hd:#1B1930;--hdr:#4B3AA8;--tx:#ECEAF7;--mu:#9C98B8;--in:#1F1D33;--out:#4B3AA8;--ac:#4B3AA8;--acl:#A99BFF;--fld:#2A2745}
+:root{--bg:#0E0D14;--hd:#1B1930;--tx:#ECEAF7;--mu:#9C98B8;--in:#1F1D33;--out:#4B3AA8;--ac:#4B3AA8;--acl:#A99BFF;--fld:#2A2745}
 [data-theme=light]{--bg:#F5F3FF;--hd:#ECE9FA;--tx:#1B1630;--mu:#6B6788;--in:#fff;--fld:#fff;--acl:#4B3AA8}
 *{box-sizing:border-box}[hidden]{display:none!important}
 html,body{height:100%;margin:0}body{font:16px system-ui,sans-serif;background:var(--bg);color:var(--tx)}
-#list,#chat,#add,#set{display:flex;flex-direction:column;height:100%}
-header{display:flex;align-items:center;gap:6px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:var(--hdr);color:#fff}
-header b{flex:1}header small,#st{color:#fff;opacity:.75;font-size:12px}
 button,.btn{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:10px 14px;font:inherit}
-header button{background:none;color:#fff;font-size:20px;padding:4px 8px}
-input{background:var(--fld);color:var(--tx);border:0;border-radius:8px;padding:8px;font:inherit}
-.sq{margin:8px 12px}
-#rows,#msgs,#sbody{flex:1;overflow:auto}
+input{background:var(--fld);color:var(--tx);border:0;border-radius:10px;padding:10px;font:inherit}
+.tab,#chat,#add,#pg{display:flex;flex-direction:column;height:100%}
+.tab{padding-bottom:calc(64px + env(safe-area-inset-bottom))}#you,#pg,#add{overflow:auto}
+.top{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 16px 4px}
+.top span{flex:1;text-align:center;font-size:12px;color:var(--mu)}
+.cb{width:40px;height:40px;border-radius:50%;background:var(--hd);color:var(--tx);display:grid;place-items:center;padding:0}.cb.pr{background:var(--ac);color:#fff}
+h1{margin:4px 16px 8px;font-size:34px}.sq{margin:6px 16px 8px}
+header{display:flex;align-items:center;gap:6px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;background:var(--hd)}
+header button{background:none;color:var(--tx);padding:4px 8px;display:grid;place-items:center}header b{flex:1}
+.ct{flex:1;display:flex;flex-direction:column;min-width:0}.ct small{font-size:12px}
+#rows,#msgs{flex:1;overflow:auto}
 .row{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--hd)}
-.av{width:44px;height:44px;border-radius:50%;background:var(--ac);display:grid;place-items:center;font-weight:700;color:#fff}
+.rt{flex:1;min-width:0}.rn{display:flex;justify-content:space-between;gap:8px}
+.rt small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.av{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none}
+div.av{display:grid;place-items:center;background:var(--ac);color:#fff;font-weight:700}
+.av.big{width:112px;height:112px;font-size:44px}
 small,.empty{color:var(--mu)}.empty{padding:24px}
 #msgs{display:flex;flex-direction:column;gap:6px;padding:12px}
 .b{max-width:80%;padding:8px 10px;border-radius:8px;white-space:pre-wrap;word-break:break-word;position:relative;margin-bottom:6px}
 .o{align-self:flex-end;background:var(--out);color:#fff}.i{align-self:flex-start;background:var(--in)}
-.q{border-left:3px solid var(--acl);padding:2px 6px;margin-bottom:4px;color:var(--mu);font-size:13px}
+.s{align-self:center;background:var(--hd);color:var(--mu);font-size:13px}
+.q{border-left:3px solid var(--acl);padding:2px 6px;margin-bottom:4px;color:var(--mu);font-size:13px}.o .q{color:#E6E0FF;border-color:#fff}
 .re{position:absolute;right:6px;bottom:-12px;background:var(--hd);border-radius:10px;padding:0 4px;font-size:13px}
 footer{display:flex;gap:8px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:var(--hd)}
-footer input{flex:1;border-radius:20px;padding:10px 14px}
-#req,#rb{padding:8px 12px;background:var(--hd);text-align:center}#rb{display:flex;justify-content:space-between;align-items:center;color:var(--mu)}
-.pad{padding:16px;display:flex;flex-direction:column;gap:12px;align-items:center;overflow:auto}
+footer input{flex:1;border-radius:20px;padding:10px 14px}footer button{display:grid;place-items:center}
+#req,#rb,#warn{padding:8px 12px;background:var(--hd);text-align:center}#rb{display:flex;justify-content:space-between;align-items:center;color:var(--mu)}
+#warn{background:#7a3b00;color:#fff}
+.pad{padding:16px;display:flex;flex-direction:column;gap:12px;align-items:center}
 #qr{width:240px;height:240px;background:#fff;border-radius:8px}#vid{width:100%;border-radius:8px}
-#toast{position:fixed;left:16px;right:16px;bottom:80px;background:var(--hd);padding:12px;border-radius:8px;text-align:center}
-#sheet{position:fixed;inset:auto 0 0 0;background:var(--hd);padding:12px 12px calc(12px + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;gap:8px;border-radius:16px 16px 0 0}
+#tabs{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--hd);padding:6px 0 calc(6px + env(safe-area-inset-bottom))}
+#tabs button{flex:1;background:none;color:var(--mu);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;padding:4px 0}#tabs .on{color:var(--acl)}
+.card{background:var(--hd);border-radius:14px;margin:12px 16px;overflow:hidden}
+.r{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--bg)}.r:last-child{border:0}
+.r .l{flex:1}.r .v{color:var(--mu);font-size:14px}.r svg:last-child{color:var(--mu)}
+.prof{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px}.prof h2{margin:4px 0}
+.note{background:var(--hd);border-radius:18px;padding:8px 14px;max-width:80%;text-align:center}
+.soon{margin:auto;text-align:center;color:var(--mu);padding:24px}
+.form label{display:block;padding:10px 16px;color:var(--mu);font-size:13px}.form input{display:block;width:100%;margin-top:4px;color:var(--tx)}
+#toast{position:fixed;left:16px;right:16px;bottom:90px;background:var(--hd);padding:12px;border-radius:8px;text-align:center;z-index:8}
+#sheet{position:fixed;inset:auto 0 0 0;background:var(--hd);padding:12px 12px calc(12px + env(safe-area-inset-bottom));display:flex;flex-wrap:wrap;gap:8px;border-radius:16px 16px 0 0;z-index:7}
 #sheet button{flex:1 1 40%;background:var(--fld);color:var(--tx)}#sheet .em{flex:0 0 14%;font-size:20px;padding:8px 0}#sheet .cx{flex:1 1 100%;background:none;color:var(--mu)}
-#sbody button{margin:6px 16px;display:block;width:calc(100% - 32px);text-align:left;background:var(--fld);color:var(--tx)}
-.s{align-self:center;background:var(--hd);color:var(--mu);font-size:13px}
-#warn{padding:8px 12px;background:#7a3b00;color:#fff;text-align:center}
 #lock{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;z-index:9}
-#cover{position:fixed;inset:0;background:var(--bg);z-index:10}
-.o .q{color:#E6E0FF;border-color:#fff}
 #dots{font-size:28px;letter-spacing:8px;min-height:36px}
-#kp{display:grid;grid-template-columns:repeat(3,72px);gap:12px}
-#kp button{height:60px;font-size:22px;background:var(--fld);color:var(--tx);border-radius:30px}
+#kp{display:grid;grid-template-columns:repeat(3,72px);gap:12px}#kp button{height:60px;font-size:22px;background:var(--fld);color:var(--tx);border-radius:30px}
+#cover{position:fixed;inset:0;background:var(--bg);z-index:10}
 </style></head><body>
-<div id="list"><header><b>BLINQ <small id="ver"></small></b><span id="st"></span><button id="arc">🗄</button><button id="setb">⚙</button><button id="addb">➕</button></header>
-<input id="sq" class="sq" placeholder="খুঁজুন"><div id="rows"></div></div>
-<div id="chat" hidden><header><button id="back">←</button><b id="cname"></b><button id="csb">🔍</button><button id="menu">⋮</button></header>
-<input id="csq" class="sq" placeholder="চ্যাটে খুঁজুন" hidden>
-<div id="req" hidden>অপরিচিত ব্যক্তি <button id="acc">গ্রহণ</button> <button id="blk">ব্লক</button></div>
-<div id="warn" hidden>⚠️ নিরাপত্তা কোড বদলেছে <button id="wrs">রিসেট</button></div>
+<div id="list" class="tab"><div class="top"><button class="cb" id="dotsb"></button><span id="st"></span><button class="cb" id="scanb"></button><button class="cb pr" id="addb"></button></div>
+<h1 id="ltitle"></h1><input id="sq" class="sq" data-p="খুঁজুন|Search"><div id="rows"></div></div>
+<div id="grp" class="tab" hidden></div><div id="bro" class="tab" hidden></div><div id="you" class="tab" hidden></div>
+<div id="chat" hidden><header><button id="back">←</button><div class="ct"><b id="cname"></b><small id="cabout"></small></div><button id="csb"></button><button id="menu"></button></header>
+<input id="csq" class="sq" data-p="চ্যাটে খুঁজুন|Search in chat" hidden>
+<div id="req" hidden><span data-l="অপরিচিত ব্যক্তি|Unknown person"></span> <button id="acc" data-l="গ্রহণ|Accept"></button> <button id="blk" data-l="ব্লক|Block"></button></div>
+<div id="warn" hidden><span data-l="নিরাপত্তা কোড বদলেছে|Safety code changed"></span> <button id="wrs" data-l="রিসেট|Reset"></button></div>
 <div id="msgs"></div><div id="rb" hidden><span id="rbt"></span><button id="rbx">✕</button></div>
-<footer><input id="inp" placeholder="মেসেজ লিখুন"><button id="snd">➤</button></footer></div>
-<div id="add" hidden><header><button id="back2">←</button><b>কন্টাক্ট যোগ</b></header>
-<div class="pad"><label>আপনার নাম <input id="myname"></label><img id="qr" alt="QR"><small>অপর জনকে এই QR স্ক্যান করতে বলুন</small>
-<button id="saveqr">QR সেভ / শেয়ার করুন</button>
-<button id="cam">ক্যামেরায় স্ক্যান</button><label class="btn">ছবি তুলে স্ক্যান<input type="file" id="snap" accept="image/*" capture="environment" hidden></label>
-<label class="btn">গ্যালারি থেকে<input type="file" id="pick" accept="image/*" hidden></label>
+<footer><input id="inp" data-p="মেসেজ লিখুন|Type a message"><button id="snd"></button></footer></div>
+<div id="add" hidden><header><button id="back2">←</button><b data-l="কন্টাক্ট যোগ|Add contact"></b></header>
+<div class="pad"><label><span data-l="আপনার নাম|Your name"></span> <input id="myname"></label><img id="qr" alt="QR"><small data-l="অপর জনকে এই QR স্ক্যান করতে বলুন|Ask the other person to scan this QR"></small>
+<button id="saveqr" data-l="QR সেভ / শেয়ার করুন|Save / share QR"></button>
+<button id="cam" data-l="ক্যামেরায় স্ক্যান|Scan with camera"></button>
+<label class="btn"><span data-l="ছবি তুলে স্ক্যান|Take photo to scan"></span><input type="file" id="snap" accept="image/*" capture="environment" hidden></label>
+<label class="btn"><span data-l="গ্যালারি থেকে|From gallery"></span><input type="file" id="pick" accept="image/*" hidden></label>
 <video id="vid" playsinline muted hidden></video></div></div>
-<div id="set" hidden><header><button id="back3">←</button><b>সেটিংস</b></header><div id="sbody"></div></div>
-<div id="lock" hidden><h2>BLINQ</h2><div id="dots">—</div><div id="kp"></div><button id="unl" hidden></button><button id="bio" hidden>👆 বায়োমেট্রিক</button><small id="lerr"></small></div>
-<div id="cover" hidden></div>
-<div id="toast" hidden></div><div id="sheet" hidden></div>
+<div id="pg" hidden><header><button id="pgback">←</button><b id="pgt"></b></header><div id="pgb"></div></div>
+<nav id="tabs"></nav>
+<div id="lock" hidden><h2>BLINQ</h2><div id="dots">—</div><div id="kp"></div><button id="unl" hidden></button><button id="bio" hidden data-l="বায়োমেট্রিক|Biometric"></button><small id="lerr"></small></div>
+<div id="cover" hidden></div><div id="toast" hidden></div><div id="sheet" hidden></div>
 <script type="module" src="./src/main.js"></script></body></html>
